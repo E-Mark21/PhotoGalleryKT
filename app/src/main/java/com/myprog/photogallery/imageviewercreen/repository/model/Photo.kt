@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 class Photo {
     @SerializedName("id")
-    var id: Int = 0
+    lateinit var id: String
     @SerializedName("owner")
     lateinit var owner: String
     @SerializedName("secret")

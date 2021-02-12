@@ -1,8 +1,12 @@
 package com.myprog.photogallery.imageviewercreen.repository
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.myprog.photogallery.imageviewercreen.contract.MainContract
 import com.myprog.photogallery.imageviewercreen.repository.model.FlickrPhoto
+import com.myprog.photogallery.imageviewercreen.repository.model.Photo
+import com.myprog.photogallery.imageviewercreen.repository.model.Photos
 import com.readystatesoftware.chuck.ChuckInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -20,6 +24,7 @@ class PhotoViewerRepository(presenter: MainContract.Presenter, context: Context?
 
     var mPresenter = presenter
 
+
     var client = OkHttpClient.Builder()
         .addInterceptor(ChuckInterceptor(context))
         .build()
@@ -36,18 +41,17 @@ class PhotoViewerRepository(presenter: MainContract.Presenter, context: Context?
         var call: Call<FlickrPhoto> = mIAPIFlickr.getPhoto("cat", PER_PAGE, API_KEY)
         call.enqueue(object : Callback<FlickrPhoto> {
             override fun onResponse(call: Call<FlickrPhoto>, response: Response<FlickrPhoto>) {
-                //var flickrPhoto: FlickrPhoto = response.body()!!
-                // var photos: Photos = flickrPhoto.photos
-                // var photo: ArrayList<Photo> = photos.photo
-                /*for (i in 0..photo.size){
+                var flickrPhoto: FlickrPhoto = response.body()!!
+                var photos: Photos = flickrPhoto.photos
+                var photo: ArrayList<Photo> = photos.photo
+                for (i in 0..photo.size){
 
-                }*/
+                }
 
 
             }
 
             override fun onFailure(call: Call<FlickrPhoto>, t: Throwable) {
-                var fg = 5
 
             }
         })
