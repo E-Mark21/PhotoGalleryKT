@@ -21,7 +21,6 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
     private var adapter: PhotoAdapter? = null
 
     var images: ArrayList<String> = arrayListOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPresenter = PhotoViewerPresenter(this, context)
@@ -35,7 +34,7 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
     ): View? {
         val view = inflater.inflate(R.layout.photo_grid_view, container, false)
         recyclerView = view.findViewById(R.id.photo_recycler) as RecyclerView
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.layoutManager = GridLayoutManager(context, 3)
         adapter = PhotoAdapter(images)
         recyclerView.adapter = adapter
         return view
@@ -56,12 +55,11 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
 
 
 
-    private inner class PhotoAdapter(images: ArrayList<String>) : RecyclerView.Adapter<ViewHolder>() {
+    private inner class PhotoAdapter(var images: ArrayList<String>) : RecyclerView.Adapter<ViewHolder>() {
 
-        var images = images
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = layoutInflater.inflate(R.layout.photo_grid_view, parent, false)
+            val view = layoutInflater.inflate(R.layout.photo_item, parent, false)
             return ViewHolder(view)
         }
 
@@ -78,7 +76,7 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
         }
 
         fun updateItem(images: ArrayList<String>) {
-
+            this.images = images
             notifyDataSetChanged()
         }
     }

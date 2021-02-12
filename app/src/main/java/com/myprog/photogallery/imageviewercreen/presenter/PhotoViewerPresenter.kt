@@ -15,7 +15,7 @@ class PhotoViewerPresenter(view: MainContract.View, context: Context?) : Fragmen
         mRepository = PhotoViewerRepository(this, context)
         mRepository.loadIMG()
     }
-    override fun updateUI() {
-
+    override fun updateUI(imgURL: ArrayList<String>) {
+        mView.updateAdapter(imgURL)
     }
 }

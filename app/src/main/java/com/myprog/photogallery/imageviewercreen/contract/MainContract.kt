@@ -6,7 +6,7 @@ interface MainContract {
     }
 
     interface Presenter {
-        fun updateUI()
+        fun updateUI(imgURL: ArrayList<String>)
     }
 
     interface Repository {
