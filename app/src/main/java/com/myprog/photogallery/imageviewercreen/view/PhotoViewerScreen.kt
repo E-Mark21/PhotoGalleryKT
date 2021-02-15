@@ -89,7 +89,7 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = layoutInflater.inflate(R.layout.photo_item, parent, false)
-            return ViewHolder(view)
+            return ViewHolder(view, images, imgArray)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -111,7 +111,7 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
     }
 
 
-    private inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view),
+    private inner class ViewHolder(view: View, images: ArrayList<String>, imgArray: ArrayList<Photo>) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
 
         var imageView: ImageView = itemView.findViewById(R.id.imageView)
