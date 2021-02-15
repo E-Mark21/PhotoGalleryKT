@@ -1,8 +1,9 @@
 package com.myprog.photogallery.imageviewercreen.repository.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class Photo {
+class Photo : Serializable {
     @SerializedName("id")
     lateinit var id: String
     @SerializedName("owner")

@@ -24,11 +24,12 @@ class PhotoViewerRepository(presenter: MainContract.Presenter, context: Context?
     MainContract.Repository {
 
     var imgURL: ArrayList<String> = arrayListOf()
+    var imgArray: ArrayList<Photo> = arrayListOf()
 
     var mPresenter = presenter
 
 
-    var client = OkHttpClient.Builder()
+    private val client = OkHttpClient.Builder()
         .addInterceptor(ChuckInterceptor(context))
         .build()
 
@@ -40,19 +41,20 @@ class PhotoViewerRepository(presenter: MainContract.Presenter, context: Context?
 
     private var mIAPIFlickr: IAPIFlickr = mRetrofit.create(IAPIFlickr::class.java)
 
-    override fun loadIMG() {
-        var call: Call<FlickrPhoto> = mIAPIFlickr.getPhoto("cat", PER_PAGE, API_KEY)
+    override fun loadIMG(request: String) {
+        var call: Call<FlickrPhoto> = mIAPIFlickr.getPhoto(request, PER_PAGE, API_KEY)
         call.enqueue(object : Callback<FlickrPhoto> {
             override fun onResponse(call: Call<FlickrPhoto>, response: Response<FlickrPhoto>) {
+                imgURL.clear()
                 val flickrPhoto: FlickrPhoto = response.body()!!
                 val photos: Photos = flickrPhoto.photos
                 val photo: ArrayList<Photo> = photos.photo
                 for (i in 0..photo.size-1) {
-
                     var url ="$BASE_URL_IMG${photo[i].server}/${photo[i].id}_${photo[i].secret}.jpg"
                     imgURL.add(url)
+                    imgArray.add(photo[i])
                 }
-                mPresenter.updateUI(imgURL)
+                mPresenter.updateUI(imgURL, imgArray)
             }
 
             override fun onFailure(call: Call<FlickrPhoto>, t: Throwable) {
