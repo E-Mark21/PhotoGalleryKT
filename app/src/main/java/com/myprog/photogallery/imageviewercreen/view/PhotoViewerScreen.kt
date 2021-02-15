@@ -2,7 +2,6 @@ package com.myprog.photogallery.imageviewercreen.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -24,8 +23,10 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
     private lateinit var mPresenter: MainContract.Presenter
     private var adapter: PhotoAdapter? = null
 
+
     var images: ArrayList<String> = arrayListOf()
     var imgArray: ArrayList<Photo> = arrayListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,54 +50,55 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.search_menu, menu)
-
         val searchItem: MenuItem = menu.findItem(R.id.search)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
 
         searchView.apply {
 
-            setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(queryText: String): Boolean {
-                mPresenter.searchIMG(queryText)
-                Log.d("View", "Request: $queryText")
-                return true
-            }
+            setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(queryText: String): Boolean {
+                    mPresenter.searchIMG(queryText)
+                    return true
+                }
 
-            override fun onQueryTextChange(queryText: String): Boolean {
-                return false
-            }
+                override fun onQueryTextChange(queryText: String): Boolean {
+                    return false
+                }
 
-        }) }
-
-
+            })
+        }
     }
 
 
     override fun updateAdapter(images: ArrayList<String>, imgArray: ArrayList<Photo>) {
+        this.images = images
+        this.imgArray = imgArray
         if (adapter == null) {
             adapter = PhotoAdapter(images, imgArray)
             recyclerView.adapter = adapter
         } else {
             adapter!!.updateItem(images, imgArray)
             adapter!!.notifyDataSetChanged()
+
         }
     }
 
 
-    private inner class PhotoAdapter(var images: ArrayList<String>, var imgArray: ArrayList<Photo>) :
-        RecyclerView.Adapter<ViewHolder>() {
-
+    private inner class PhotoAdapter(
+        var images: ArrayList<String>,
+        var imgArray: ArrayList<Photo>
+    ) : RecyclerView.Adapter<ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = layoutInflater.inflate(R.layout.photo_item, parent, false)
-            return ViewHolder(view, images, imgArray)
+            return ViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             Picasso.with(holder.itemView.context)
                 .load(images[position])
                 .into(holder.imageView)
-
         }
 
         override fun getItemCount(): Int {
@@ -111,20 +113,25 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
     }
 
 
-    private inner class ViewHolder(view: View, images: ArrayList<String>, imgArray: ArrayList<Photo>) : RecyclerView.ViewHolder(view),
+    private inner class ViewHolder(
+        view: View,
+    ) : RecyclerView.ViewHolder(view),
         View.OnClickListener {
 
         var imageView: ImageView = itemView.findViewById(R.id.imageView)
 
+
         init {
-            itemView.setOnClickListener (this)
+            itemView.setOnClickListener(this)
         }
 
         override fun onClick(v: View) {
-            Intent(context, FullScreenPhoto::class.java).apply {
-                     putExtra(EXTRA_URL, images[position])
-                    .putExtra(EXTRA_DATA, imgArray[position])
-            }
+            val intent = Intent(context, FullScreenPhoto::class.java)
+
+            intent.putExtra(EXTRA_URL, images[position])
+                .putExtra(EXTRA_DATA, imgArray[position])
+            startActivity(intent)
+
         }
     }
 

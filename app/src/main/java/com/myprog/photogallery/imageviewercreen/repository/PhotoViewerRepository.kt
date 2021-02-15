@@ -61,4 +61,24 @@ class PhotoViewerRepository(presenter: MainContract.Presenter, context: Context?
             }
         })
     }
+    override fun loadLastIMG(){
+        var call: Call<FlickrPhoto> = mIAPIFlickr.getLastPhoto(PER_PAGE, API_KEY)
+        call.enqueue(object : Callback<FlickrPhoto> {
+            override fun onResponse(call: Call<FlickrPhoto>, response: Response<FlickrPhoto>) {
+                imgURL.clear()
+                val flickrPhoto: FlickrPhoto = response.body()!!
+                val photos: Photos = flickrPhoto.photos
+                val photo: ArrayList<Photo> = photos.photo
+                for (i in 0..photo.size-1) {
+                    var url ="$BASE_URL_IMG${photo[i].server}/${photo[i].id}_${photo[i].secret}.jpg"
+                    imgURL.add(url)
+                    imgArray.add(photo[i])
+                }
+                mPresenter.updateUI(imgURL, imgArray)
+            }
+
+            override fun onFailure(call: Call<FlickrPhoto>, t: Throwable) {
+            }
+        })
+    }
 }
