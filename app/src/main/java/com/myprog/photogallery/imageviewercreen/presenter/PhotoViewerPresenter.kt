@@ -23,4 +23,8 @@ class PhotoViewerPresenter(view: MainContract.View, context: Context?) : Fragmen
     override fun searchIMG(request: String) {
         mRepository.loadIMG(request)
     }
+
+    override fun loadLastIMG() {
+        mRepository.loadLastIMG()
+    }
 }

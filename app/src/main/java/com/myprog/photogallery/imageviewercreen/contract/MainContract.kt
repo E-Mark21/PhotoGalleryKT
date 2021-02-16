@@ -10,6 +10,7 @@ interface MainContract {
     interface Presenter {
         fun updateUI(imgURL: ArrayList<String>, imgArray: ArrayList<Photo>)
         fun searchIMG(request: String)
+        fun loadLastIMG() //Метод создавал для swipeRefresh
     }
 
     interface Repository {

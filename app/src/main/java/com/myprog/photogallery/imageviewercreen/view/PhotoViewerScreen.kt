@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.myprog.photogallery.R
 import com.myprog.photogallery.fullsreenphoto.EXTRA_DATA
 import com.myprog.photogallery.fullsreenphoto.EXTRA_URL
@@ -23,11 +24,12 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var mPresenter: MainContract.Presenter
+
+
     private var adapter: PhotoAdapter? = null
-
-
     var images: ArrayList<String> = arrayListOf()
     var imgArray: ArrayList<Photo> = arrayListOf()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +57,6 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
         inflater.inflate(R.menu.search_menu, menu)
         val searchItem: MenuItem = menu.findItem(R.id.search)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
-
         searchView.apply {
 
             setOnQueryTextListener(object :
@@ -74,9 +75,10 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
         }
     }
 
-    fun hideKeyboard(){
-        val imm: InputMethodManager = context!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view!!.windowToken,0)
+    fun hideKeyboard() {
+        val imm: InputMethodManager =
+            context!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view!!.windowToken, 0)
     }
 
     override fun updateAdapter(images: ArrayList<String>, imgArray: ArrayList<Photo>) {
