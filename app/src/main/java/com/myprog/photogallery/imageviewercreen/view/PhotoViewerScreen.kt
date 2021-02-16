@@ -1,8 +1,10 @@
 package com.myprog.photogallery.imageviewercreen.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,6 +34,7 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         mPresenter = PhotoViewerPresenter(this, context)
+        retainInstance = true
     }
 
     override fun onCreateView(
@@ -58,6 +61,7 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
             setOnQueryTextListener(object :
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(queryText: String): Boolean {
+                    hideKeyboard()
                     mPresenter.searchIMG(queryText)
                     return true
                 }
@@ -70,6 +74,10 @@ class PhotoViewerScreen : Fragment(), MainContract.View {
         }
     }
 
+    fun hideKeyboard(){
+        val imm: InputMethodManager = context!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view!!.windowToken,0)
+    }
 
     override fun updateAdapter(images: ArrayList<String>, imgArray: ArrayList<Photo>) {
         this.images = images

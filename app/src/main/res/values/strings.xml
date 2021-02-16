@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">PhotoGallery</string>
     <string name="search">Search</string>
+    <string name="id">ID: </string>
+    <string name="owner">Owner: </string>
+    <string name="secret">Secret: </string>
+    <string name="server">Server: </string>
+    <string name="image">image</string>
+    <string name="title">Title:</string>
+
 </resources>
